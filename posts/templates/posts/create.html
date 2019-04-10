@@ -2,6 +2,8 @@
 {% load bootstrap4 %}
 {% block body %}
 <form method="POST">
+  {% csrf_token %}
   {% bootstrap_form form %}
+  <button type="submit" class="btn btn-outline-secondary"> Upload </button>
 </form>
 {% endblock %}
