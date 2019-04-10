@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+{% for post in posts %}
+  <p>{{ post.content }}</p>
+{% endfor %}
+{% endblock %}
