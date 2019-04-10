@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block body %}
-{% for post in posts %}
-  <p>{{ post.content }}</p>
-{% endfor %}
+<div class="row justify-content-center">
+  {% for post in posts %}
+  <div class="card" style="width: 40rem;">
+    <img src="https://picsum.photos/30{{ forloop.counter0 }}/30{{ forloop.counter0 }}/?random" class="card-img-top" alt="...">
+    <div class="card-body">
+      <p class="card-text">{{ post.content }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
