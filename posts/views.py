@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import PostForm
 
-# Create your views here.
+
 def create(request):
-    pass
+    if request.method == "POST":
+        return
+    else:
+        form = PostForm()
+        return render(request, 'posts/create.html', {'form':form})
