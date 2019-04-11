@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm
 from .models import Post
 
@@ -15,7 +15,7 @@ def create(request):
 
 
 def update(request, pk):
-    post = Post.objects.get(id=pk)
+    post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         form = PostForm(instance=post, data=request.POST)
         if form.is_valid():
@@ -29,7 +29,7 @@ def update(request, pk):
 
 def delete(request, pk):
     if request.method == "POST":
-        post = Post.objects.get(id=pk)
+        post = get_object_or_404(Post, pk=pk)
         post.delete()
     return redirect('posts:index')
 
