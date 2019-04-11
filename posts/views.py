@@ -15,6 +15,8 @@ def create(request):
 
 def update(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if request.user != post.user:
+        return redirect('posts:index')
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -28,6 +30,8 @@ def update(request, pk):
 def delete(request, pk):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=pk)
+        if request.user != post.user:
+            return redirect('posts:index')
         post.delete()
     return redirect('posts:index')
 
