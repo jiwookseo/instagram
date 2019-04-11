@@ -4,27 +4,25 @@ from .models import Post
 
 def create(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('posts:create')
-        return
+            return redirect('posts:index')
     else:
         form = PostForm()
-        return render(request, 'posts/create.html', {'form':form})
+    return render(request, 'posts/create.html', {'form':form})
 
 
 def update(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = PostForm(instance=post, data=request.POST)
+        form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             return redirect('posts:index')
-        return render(request, 'posts/create.html', {'form':form})
     else:
         form = PostForm(instance=post)
-        return render(request, 'posts/create.html', {'form':form})
+    return render(request, 'posts/create.html', {'form':form})
 
 
 def delete(request, pk):

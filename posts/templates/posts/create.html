@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block body %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {% bootstrap_form form %}
   <button type="submit" class="btn btn-outline-secondary"> {% if form.instance.id %} Update {% else %} Upload {% endif %}</button>
