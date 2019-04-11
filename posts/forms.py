@@ -6,6 +6,7 @@ class PostForm(forms.ModelForm):
                     'rows': 7,
                     'placeholder': '오늘은 무엇을 하셨나요'
                 }))
+    image = forms.ImageField()
     class Meta:
         model = Post
-        fields = ['content']
+        fields = ('content', 'image',)
