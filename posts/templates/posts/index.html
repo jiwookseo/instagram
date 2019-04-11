@@ -5,7 +5,7 @@
   {% for post in posts %}
   <div class="card" style="width: 40rem;">
     {% if post.image %}
-    <img src="../media/{{ post.image }}" class="card-img-top" alt="...">
+    <img src="{{ post.image.url }}" class="card-img-top" alt="...">
     {% else %}
     <img src="https://picsum.photos/30{{ forloop.counter0 }}/30{{ forloop.counter0 }}/?random" class="card-img-top" alt="...">
     {% endif %}
