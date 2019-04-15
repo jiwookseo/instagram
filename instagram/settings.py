@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['insta-shine1225.c9users.io']
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'bootstrap4',
     'posts',
     'django_extensions',
