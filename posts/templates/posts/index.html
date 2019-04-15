@@ -20,6 +20,14 @@
         </form>
       </div>
       {% endif %}
+      <a href="{% url 'posts:like' post.id %}">
+        {% if request.user in post.like_users.all %}
+        <i class="fas fa-heart"></i>
+        {% else %}
+        <i class="far fa-heart"></i>
+        {% endif %}
+      </a>
+      {{ post.like_users.count }}명
     </div>
   </div>
   {% endfor %}

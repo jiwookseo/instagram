@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm
 from .models import Post
+from django.contrib.auth.decorators import login_required
 
 def create(request):
     if request.method == "POST":
@@ -39,3 +40,12 @@ def delete(request, pk):
 def index(request):
     posts = Post.objects.order_by('-id')
     return render(request, 'posts/index.html', {'posts':posts})
+
+@login_required
+def like(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.like_users.all():
+        post.like_users.remove(request.user)
+    else:
+        post.like_users.add(request.user)
+    return redirect('posts:index')
