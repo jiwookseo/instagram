@@ -8,8 +8,20 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
+      {% if user.is_authenticated %}
       <li class="nav-item">
-      {% if user.is_authenticated %}<a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
-      {% else %}<a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>{% endif%}
+        <a class="nav-link" href="{% url 'people' user.username %}">{{ user.username }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:logout' %}">logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:login' %}">sign up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:login' %}">login</a>
+      </li>
+      {% endif%}
   </div>
 </nav>
