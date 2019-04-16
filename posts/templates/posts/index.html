@@ -10,7 +10,7 @@
     {% else %}
     <img src="https://picsum.photos/30{{ forloop.counter0 }}/30{{ forloop.counter0 }}/?random" class="card-img-top" alt="...">
     {% endif %}
-    <div class="card-body">
+    <div class="card-body py-2">
       <p class="card-text">{{ post.content }}</p>
       {% if post.user == request.user %}
       <div class="row justify-content-end mr-1">
@@ -28,6 +28,40 @@
         {% endif %}
       </a>
       {{ post.like_users.count }}명
+    </div>
+    <div class="card-body py-1">
+      {% if request.user.is_authenticated %}
+      <form method="POST" action="{% url 'posts:comment_create' post.id %}">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-10 col-9 pr-1">
+            {% bootstrap_form form %}
+          </div>
+          <div class="col-1 ml-3">
+            <input type="submit" class="btn btn-outline-primary" value="게시"/>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+    {% if post.comment_set.all %}
+      {% for comment in post.comment_set.all reversed %}
+      <div class="row m-2">
+        <div class="mr-2">
+          <strong>{{ comment.user.username }}</strong>
+        </div>
+        <div>
+          {{ comment.content }}
+        </div>
+        {% if request.user == comment.user %}
+        <div class="ml-auto">
+          <form action="{% url 'posts:comment_delete' comment.id %}" method="POST">{% csrf_token %}
+            <button type="submit" class="btn p-0"><i class="fas fa-times"></i></button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% endif %}
     </div>
   </div>
   {% endfor %}
