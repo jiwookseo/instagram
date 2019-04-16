@@ -55,6 +55,7 @@ def update(request):
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            return redirect('people', request.user.username)
     form = CustomUserChangeForm(instance=request.user)
     return render(request, 'accounts/form.html', {'form':form})
     
@@ -65,5 +66,6 @@ def password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
+            return redirect('people', request.user.username)
     form = PasswordChangeForm(user=request.user)
     return render(request, 'accounts/form.html', {'form':form})
