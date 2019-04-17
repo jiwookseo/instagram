@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% block body %}
-<h1>{{ people.username }}
-{% if request.user == people %}<a class="btn btn-outline-secondary ml-3 py-1 px-2" href="{% url 'accounts:update' %}">프로필수정</a>{% endif %}
-</h1>
-<div class='mb-3'>게시물 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로워 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로우 <strong class="mr-2">{{ people.post_set.count }}</strong></div>
+<div style="font-size: 28px;line-height: 32px;" class="mb-4">{{ people.username }}
+{% if request.user == people %}<a class="btn btn-outline-secondary ml-2 py-1 px-2" href="{% url 'accounts:update' %}">프로필수정</a>
+{% else %}
+{% if people in request.user.followers.all %}
+<a class="btn btn-outline-secondary ml-2 py-1 px-2" href="{% url 'accounts:follow' people.id %}">팔로잉</a>
+{% else %}
+<a class="btn btn-primary ml-2 py-1 px-2" href="{% url 'accounts:follow' people.id %}">팔로우</a>
+{% endif %}
+{% endif %}
+</div>
+<div class='mb-3'>게시물 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로워 <strong class="mr-2">{{ people.followings.count }}</strong> 팔로우 <strong class="mr-2">{{ people.followers.count }}</strong></div>
 <div class="mb-2"><strong>{{ people.last_name }}{{ people.first_name }}</strong></div>
-{% if user.profile %}
+{% if people.profile %}
 <div class='mb-2'>
-  {{ user.profile.description|linebreaks }}
+  {{ people.profile.description|linebreaks }}
 </div>
 {% endif %}
 <div class="row">

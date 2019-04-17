@@ -23,5 +23,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('signup/', views.signup, name='signup'),
     path('update/', views.update, name='update'),
+    path('<int:pk>/follow/', views.follow, name='follow'),
     path('password/', views.password, name='password'),
 ]

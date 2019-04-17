@@ -4,8 +4,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
-from .forms import CustomUserChangeForm, ProfileForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm, ProfileForm
 from .models import Profile
 
 
@@ -32,7 +32,7 @@ def logout(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             Profile.objects.create(user=user)
@@ -42,13 +42,23 @@ def signup(request):
         else:
             messages.success(request, 'Login fail, check your username or password')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'accounts/form.html', {'form':form})
     
 
 def people(request, username):
     people = get_object_or_404(get_user_model(), username=username)
     return render(request, 'accounts/people.html', {'people':people})
+
+
+@login_required
+def follow(request, pk):
+    people = get_object_or_404(get_user_model(), pk=pk)
+    if people in request.user.followers.all():
+        request.user.followers.remove(people)
+    else:
+        request.user.followers.add(people)
+    return redirect('people', people.username)
     
 
 @login_required
