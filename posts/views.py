@@ -3,6 +3,8 @@ from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.db.models import Q
+
 
 def create(request):
     if request.method == "POST":
@@ -41,7 +43,10 @@ def delete(request, pk):
 
 
 def index(request):
-    posts = Post.objects.order_by('-id')
+    my_filter = Q(user=request.user)
+    for user in request.user.followers.all():
+        my_filter = my_filter | Q(user=user)
+    posts = Post.objects.filter(my_filter).order_by('-id')
     form = CommentForm()
     return render(request, 'posts/index.html', {'posts':posts, 'form':form})
 
