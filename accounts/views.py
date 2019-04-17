@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
-from .forms import CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
+from .forms import CustomUserChangeForm, ProfileForm
+from .models import Profile
 
 
 def login(request):
@@ -34,6 +35,7 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.create(user=user)
             auth_login(request, user)
             messages.success(request, 'Register Success, welcome {}'.format(user.username))
             return redirect('posts:index')
@@ -53,11 +55,18 @@ def people(request, username):
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
+        form2 = ProfileForm(request.POST, instance=Profile.objects.get_or_create(user=request.user)[0])
+        if form.is_valid() and form2.is_valid():
             form.save()
+            form2.save()
+            messages.success(request, 'Update Success')
             return redirect('people', request.user.username)
-    form = CustomUserChangeForm(instance=request.user)
-    return render(request, 'accounts/form.html', {'form':form})
+        else:
+            messages.success(request, 'Check your input')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+        form2 = ProfileForm(instance=Profile.objects.get_or_create(user=request.user)[0])
+    return render(request, 'accounts/form2.html', {'form':form, 'form2':form2})
     
 
 def password(request):
