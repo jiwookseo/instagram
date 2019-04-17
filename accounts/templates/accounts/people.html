@@ -3,8 +3,13 @@
 <h1>{{ people.username }}
 {% if request.user == people %}<a class="btn btn-outline-secondary ml-3 py-1 px-2" href="{% url 'accounts:update' %}">프로필수정</a>{% endif %}
 </h1>
-<p>게시물 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로워 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로우 <strong class="mr-2">{{ people.post_set.count }}</strong></p>
-<p>{{ people.last_name }}{{ people.first_name }}</p>
+<div class='mb-3'>게시물 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로워 <strong class="mr-2">{{ people.post_set.count }}</strong> 팔로우 <strong class="mr-2">{{ people.post_set.count }}</strong></div>
+<div class="mb-2"><strong>{{ people.last_name }}{{ people.first_name }}</strong></div>
+{% if user.profile %}
+<div class='mb-2'>
+  {{ user.profile.description|linebreaks }}
+</div>
+{% endif %}
 <div class="row">
   {% for post in people.post_set.all %}
     {% if post.image %}
