@@ -42,6 +42,7 @@ def delete(request, pk):
     return redirect('posts:index')
 
 
+@login_required
 def index(request):
     my_filter = Q(user=request.user)
     for user in request.user.followers.all():
