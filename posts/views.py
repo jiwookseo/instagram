@@ -44,10 +44,7 @@ def delete(request, pk):
 
 @login_required
 def index(request):
-    my_filter = Q(user=request.user)
-    for user in request.user.followers.all():
-        my_filter = my_filter | Q(user=user)
-    posts = Post.objects.filter(my_filter).order_by('-id')
+    posts = Post.objects.filter(Q(user__in=request.user.followers.all())|Q(user=request.user)).order_by('-id')
     form = CommentForm()
     return render(request, 'posts/index.html', {'posts':posts, 'form':form})
 
