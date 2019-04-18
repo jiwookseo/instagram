@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block body %}
-<form method="post" class="col-md-6 offset-md-3">
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
   {% csrf_token %}
   {% bootstrap_form form %}
   {% bootstrap_form form2 %}

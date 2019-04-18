@@ -65,7 +65,9 @@ def follow(request, pk):
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=request.user)
-        form2 = ProfileForm(request.POST, instance=Profile.objects.get_or_create(user=request.user)[0])
+        user, created = Profile.objects.get_or_create(user=request.user)
+        form2 = ProfileForm(request.POST, request.FILES, instance=user)
+        print(request.FILES)
         if form.is_valid() and form2.is_valid():
             form.save()
             form2.save()
@@ -75,7 +77,8 @@ def update(request):
             messages.success(request, 'Check your input')
     else:
         form = CustomUserChangeForm(instance=request.user)
-        form2 = ProfileForm(instance=Profile.objects.get_or_create(user=request.user)[0])
+        user, created = Profile.objects.get_or_create(user=request.user)
+        form2 = ProfileForm(instance=user)
     return render(request, 'accounts/form2.html', {'form':form, 'form2':form2})
     
 
