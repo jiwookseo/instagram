@@ -56,7 +56,7 @@ def follow(request, pk):
     people = get_object_or_404(get_user_model(), pk=pk)
     if people in request.user.followers.all():
         request.user.followers.remove(people)
-    else:
+    elif people != request.user:
         request.user.followers.add(people)
     return redirect('people', people.username)
     
