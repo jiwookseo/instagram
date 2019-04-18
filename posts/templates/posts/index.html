@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
   {% for post in posts %}
   <div class="card my-4" style="width: 40rem;">
-      <div class="card-header">{{ post.user }}</div>
+      <a href="{% url 'people' post.user.username %}" class="card-header text-muted">{{ post.user }}</a>
     {% if post.image %}
     <img src="{{ post.image.url }}" class="card-img-top" alt="...">
     {% else %}
